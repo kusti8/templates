@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 # http://flask-restful.readthedocs.io/en/0.3.5/quickstart.html
 
@@ -24,9 +24,15 @@ class TodoSimple(Resource):
         todos[todo_id] = request.form['data']
         return {todo_id: todos[todo_id]}
 
+class Args(Resource):
+    def get(self):
+        ids = request.args.get('id')
+        return {'arg_get': 'Worked', 'value': str(ids)}
+
 api.add_resource(TodoSimple, '/<string:todo_id>')
 api.add_resource(HelloWorld, '/hi')
 api.add_resource(Hi, '/args/<arg>')
+api.add_resource(Args, '/args')
 
 if __name__ == '__main__':
     app.run(debug=True)
